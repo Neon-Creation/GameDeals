@@ -1,26 +1,9 @@
 import UIKit
 
 class InitView: UIView {
-    let tableView = UITableView()
-    let sortControl = UISegmentedControl(items: ["Desconto", "Preço", "Nome"])
-    let refreshControl = UIRefreshControl()
-    let retryButton = UIButton(type: .system)
-
-    private let messageLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.preferredFont(forTextStyle: .body)
-        label.textColor = .secondaryLabel
-        label.textAlignment = .center
-        label.numberOfLines = 0
-        return label
-    }()
-
-    private let activityIndicator = UIActivityIndicatorView(style: .medium)
-    private let stateContainer = UIView()
-
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .systemBackground
+        self.backgroundColor = .white
         setupView()
         setupConstraints()
     }
@@ -34,10 +17,8 @@ class InitView: UIView {
             axis: .vertical,
             arrangedSubViews: [
                 subtitleLabel,
-                sortControl,
-                tableView
-            ],
-            spacing: Spacing.standard
+                segmentedControl
+            ]
         )
         return customStack
     }()
@@ -51,63 +32,26 @@ class InitView: UIView {
         return label
     }()
     
+    private let segmentedControl: UISegmentedControl = {
+        let items = ["Desconto", "Preço", "Nota"]
+        let control = UISegmentedControl(items: items)
+        
+        control.selectedSegmentIndex = 0
+        control.selectedSegmentTintColor = .systemBlue
+        
+        control.setTitleTextAttributes([.foregroundColor: UIColor.white], for: .selected)
+        control.setTitleTextAttributes([.foregroundColor: UIColor.label], for: .normal)
+        
+        control.translatesAutoresizingMaskIntoConstraints = false
+        return control
+    }()
+    
     private func setupView() {
         addSubview(mainStackView)
-        sortControl.selectedSegmentIndex = 0
-        tableView.rowHeight = 88
-        tableView.register(DealTableViewCell.self, forCellReuseIdentifier: DealTableViewCell.reuseIdentifier)
-
-        retryButton.setTitle("Tentar novamente", for: .normal)
-        retryButton.isHidden = true
-
-        let stateStack = UIStackView(arrangedSubviews: [activityIndicator, messageLabel, retryButton])
-        stateStack.axis = .vertical
-        stateStack.alignment = .center
-        stateStack.spacing = Spacing.small
-        stateStack.translatesAutoresizingMaskIntoConstraints = false
-        stateContainer.addSubview(stateStack)
-
-        NSLayoutConstraint.activate([
-            stateStack.centerXAnchor.constraint(equalTo: stateContainer.centerXAnchor),
-            stateStack.centerYAnchor.constraint(equalTo: stateContainer.centerYAnchor),
-            stateStack.leadingAnchor.constraint(greaterThanOrEqualTo: stateContainer.leadingAnchor, constant: Spacing.large),
-            stateStack.trailingAnchor.constraint(lessThanOrEqualTo: stateContainer.trailingAnchor, constant: -Spacing.large)
-        ])
     }
     
     private func setupConstraints() {
-        NSLayoutConstraint.activate([
-            mainStackView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: Spacing.standard),
-            mainStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Spacing.standard),
-            mainStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Spacing.standard),
-            mainStackView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor)
-        ])
-    }
-
-    func showLoading() {
-        messageLabel.text = "Carregando promoções..."
-        retryButton.isHidden = true
-        activityIndicator.startAnimating()
-        tableView.backgroundView = stateContainer
-    }
-
-    func showError(_ message: String) {
-        messageLabel.text = message
-        retryButton.isHidden = false
-        activityIndicator.stopAnimating()
-        tableView.backgroundView = stateContainer
-    }
-
-    func showEmptyState() {
-        messageLabel.text = "Nenhuma promoção encontrada no momento."
-        retryButton.isHidden = false
-        activityIndicator.stopAnimating()
-        tableView.backgroundView = stateContainer
-    }
-
-    func showDeals() {
-        activityIndicator.stopAnimating()
-        tableView.backgroundView = nil
+        mainStackView.fillSafeArea()
     }
 }
 
