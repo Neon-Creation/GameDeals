@@ -6,14 +6,14 @@ class GameBoxContainer: UIView {
     private let gameName: String
     private let offPercentage: Int
     private let shopName: String
-    private let currentGamePrince: Double
+    private let currentGamePrice: String
     
-    init(gameImage: UIImage, gameName: String, offPercentage: Int, shopName: String, currentGamePrince: Double) {
+    init(gameImage: UIImage, gameName: String, offPercentage: Int, shopName: String, currentGamePrice: String) {
         self.gameImage = gameImage
         self.gameName = gameName
         self.offPercentage = offPercentage
         self.shopName = shopName
-        self.currentGamePrince = currentGamePrince
+        self.currentGamePrice = currentGamePrice
         
         super.init(frame: .zero)
         
@@ -25,15 +25,20 @@ class GameBoxContainer: UIView {
     }
     
     func setupView() {
+        gameImageCard.image = gameImage
         gameNameLabel.text = gameName
         priceAndShopLabel.text = "\(shopName) • -\(offPercentage)%"
-        priceLabel.text = String(format: "R$ %.2f", currentGamePrince)
+        priceLabel.text = currentGamePrice
         
         addSubview(mainStack)
         
         mainStack.fillSuperView()
     }
-    
+
+    func setGameImage(_ image: UIImage?) {
+        gameImageCard.image = image
+    }
+
     private lazy var mainStack: CustomStack = {
         let stack = CustomStack(
             axis: .horizontal,
@@ -50,8 +55,8 @@ class GameBoxContainer: UIView {
     
     private let gameImageCard: UIImageView = {
         let image = UIImageView()
-        image.backgroundColor = .red
-        image.contentMode = .scaleAspectFit
+        image.backgroundColor = .secondarySystemBackground
+        image.contentMode = .scaleAspectFill
         image.clipsToBounds = true
                 
         NSLayoutConstraint.activate([
@@ -79,7 +84,7 @@ class GameBoxContainer: UIView {
     private let gameNameLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.preferredFont(forTextStyle: .body)
-        label.textColor = .black
+        label.textColor = .label
         return label
     }()
     
@@ -99,5 +104,5 @@ class GameBoxContainer: UIView {
 }
 
 #Preview {
-    GameBoxContainer(gameImage: UIImage(named: "imageTest")!, gameName: "Helo", offPercentage: 10, shopName: "Steam", currentGamePrince: 11.9)
+    GameBoxContainer(gameImage: UIImage(systemName: "gamecontroller") ?? UIImage(), gameName: "Hello", offPercentage: 10, shopName: "Steam", currentGamePrice: "R$ 11,90")
 }
