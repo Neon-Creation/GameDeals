@@ -1,24 +1,13 @@
 import UIKit
 
 class DealTableViewCell: UITableViewCell {
-    
     static let reuseIdentifier = "DealTableViewCell"
-
-    private let gameImage: UIImage?
-    private let gameName: String
-    private let offPercentage: Int
-    private let shopName: String
-    private let currentGamePrice: String
     
-    init(gameImage: UIImage, gameName: String, offPercentage: Int, shopName: String, currentGamePrice: String) {
-        self.gameImage = gameImage
-        self.gameName = gameName
-        self.offPercentage = offPercentage
-        self.shopName = shopName
-        self.currentGamePrice = currentGamePrice
-        
-        super.init(frame: .zero)
-        
+    private let customContainer = GameDealsContainer()
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        styleListConfig()
         setupView()
     }
     
@@ -26,82 +15,40 @@ class DealTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setupView() {
-        gameImageCard.image = gameImage
-        gameNameLabel.text = gameName
-        priceAndShopLabel.text = "\(shopName) • -\(offPercentage)%"
-        priceLabel.text = currentGamePrice
-        
-        addSubview(mainStack)
-        
-        mainStack.fillSuperView()
+    private func setupView() {
+        contentView.addSubview(customContainer)
+        customContainer.fillSafeArea()
     }
-
-    func setGameImage(_ image: UIImage?) {
-        gameImageCard.image = image
+    
+    private func styleListConfig() {
+        selectionStyle = .default
+        accessoryType = .disclosureIndicator
+        backgroundColor = .clear
     }
-
-    private lazy var mainStack: CustomStack = {
-        let stack = CustomStack(
-            axis: .horizontal,
-            arrangedSubViews: [
-                gameImageCard,
-                stackedLabels,
-                priceLabel
-            ],
-            spacing: Spacing.medium,
-            alignment: .center
-        )
-        return stack
-    }()
     
-    private let gameImageCard: UIImageView = {
-        let image = UIImageView()
-        image.backgroundColor = .secondarySystemBackground
-        image.contentMode = .scaleAspectFill
-        image.clipsToBounds = true
-        image.layer.cornerRadius = 12
-                
-        NSLayoutConstraint.activate([
-            image.widthAnchor.constraint(equalToConstant: 60),
-            image.heightAnchor.constraint(equalToConstant: 60)
-        ])
-        
-        return image
-    }()
+    func configure(
+        gameImage: UIImage?,
+        gameName: String?,
+        offPercentage: Int?,
+        shopName: String?,
+        currentGamePrice: Double?
+    ) {
+        customContainer
+            .configure(
+                gameImage: gameImage,
+                gameName: gameName,
+                offPercentage: offPercentage,
+                shopName: shopName,
+                currentGamePrice: currentGamePrice
+            )
+    }
     
-    private lazy var stackedLabels: CustomStack = {
-        let stack = CustomStack(
-            axis: .vertical,
-            arrangedSubViews: [
-                gameNameLabel,
-                priceAndShopLabel
-            ],
-            spacing: 4,
-            alignment: .leading
-        )
-                
-        return stack
-    }()
-    
-    private let gameNameLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.preferredFont(forTextStyle: .body)
-        label.textColor = .label
-        return label
-    }()
-    
-    private let priceAndShopLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.preferredFont(forTextStyle: .subheadline)
-        label.textColor = .systemGreen
-        return label
-    }()
-    
-    private let priceLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.preferredFont(forTextStyle: .callout)
-        label.textColor = .systemGray
-        return label
-    }()
+    func configure(
+        shopImage: UIImage?,
+        shopName: String,
+        status: Bool
+    ) {
+        customContainer
+            .configure(shopImage: shopImage, shopName: shopName, status: status)
+    }
 }

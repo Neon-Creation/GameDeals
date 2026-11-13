@@ -12,12 +12,21 @@ class InitView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    private func setupView() {
+        addSubview(mainStackView)
+    }
+    
+    private func setupConstraints() {
+        mainStackView.fillSafeArea()
+    }
+    
     private lazy var mainStackView: CustomStack = {
         let customStack = CustomStack(
             axis: .vertical,
             arrangedSubViews: [
                 subtitleLabel,
-                segmentedControl
+                segmentedControl,
+                tableView
             ]
         )
         return customStack
@@ -46,13 +55,14 @@ class InitView: UIView {
         return control
     }()
     
-    private func setupView() {
-        addSubview(mainStackView)
-    }
-    
-    private func setupConstraints() {
-        mainStackView.fillSafeArea()
-    }
+    let tableView: UITableView = {
+        let table = UITableView()
+        table.backgroundColor = .clear
+        table.separatorStyle = .singleLine
+        table.showsVerticalScrollIndicator = false
+        table.translatesAutoresizingMaskIntoConstraints = false
+        return table
+    }()
 }
 
 #Preview {
