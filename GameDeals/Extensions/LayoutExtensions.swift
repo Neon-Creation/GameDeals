@@ -31,6 +31,8 @@ extension UIView {
             fatalError("Call addSubView before calling this function")
         }
         
+        self.translatesAutoresizingMaskIntoConstraints = false
+        
         NSLayoutConstraint.activate([
             self.topAnchor.constraint(equalTo: superview.topAnchor),
             self.leadingAnchor.constraint(equalTo: superview.leadingAnchor),

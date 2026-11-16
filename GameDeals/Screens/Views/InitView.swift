@@ -18,6 +18,9 @@ class InitView: UIView {
     
     private func setupConstraints() {
         mainStackView.fillSafeArea()
+        NSLayoutConstraint.activate([
+            mainStackView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor)
+        ])
     }
     
     private lazy var mainStackView: CustomStack = {
@@ -61,6 +64,10 @@ class InitView: UIView {
         table.separatorStyle = .singleLine
         table.showsVerticalScrollIndicator = false
         table.translatesAutoresizingMaskIntoConstraints = false
+        
+        table.rowHeight = UITableView.automaticDimension
+        table.estimatedRowHeight = 80
+        
         return table
     }()
 }

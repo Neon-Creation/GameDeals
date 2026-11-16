@@ -17,7 +17,7 @@ class GameDealsContainer: UIView {
         self.init(frame: .zero)
         configure(
             gameImage: gameImage,
-            gameName: gameName,
+            title: gameName,
             offPercentage: offPercentage,
             shopName: shopName,
             currentGamePrice: currentGamePrice
@@ -34,16 +34,30 @@ class GameDealsContainer: UIView {
         mainStack.fillSuperView()
     }
     
+    func setupConstraints() {
+        NSLayoutConstraint.activate([
+            mainStack.topAnchor.constraint(equalTo: topAnchor, constant: Spacing.small),
+            mainStack.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Spacing.small),
+            mainStack.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Spacing.standard),
+            mainStack.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Spacing.standard),
+            heightAnchor.constraint(greaterThanOrEqualToConstant: 76)
+        ])
+    }
+    
+    func updateImage(_ image: UIImage?) {
+        self.imageCard.image = image
+    }
+    
     // MARK: SOBRECARGA DO COMPONENTE
     func configure(
         gameImage: UIImage?,
-        gameName: String?,
+        title: String?,
         offPercentage: Int?,
         shopName: String?,
         currentGamePrice: Double?
     ) {
         imageCard.image = gameImage
-        gameNameLabel.text = gameName
+        gameNameLabel.text = title
         
         if let percentage = offPercentage, let shopName = shopName {
             offPercentageAndShopLabel.isHidden = false
@@ -64,7 +78,7 @@ class GameDealsContainer: UIView {
     ) {
         configure(
             gameImage: shopImage,
-            gameName: shopName,
+            title: shopName,
             offPercentage: nil,
             shopName: nil,
             currentGamePrice: nil
@@ -95,6 +109,7 @@ class GameDealsContainer: UIView {
         image.contentMode = .scaleAspectFit
         image.clipsToBounds = true
         image.layer.cornerRadius = 12
+        image.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
             image.widthAnchor.constraint(equalToConstant: 60),
@@ -138,70 +153,4 @@ class GameDealsContainer: UIView {
         label.textColor = .systemGray
         return label
     }()
-}
-
-#Preview("1. Jogo em Promoção") {
-    let view = GameDealsContainer()
-    view.configure(
-        gameImage: UIImage(systemName: "gamecontroller.fill"),
-        gameName: "Hades II",
-        offPercentage: 25,
-        shopName: "Steam",
-        currentGamePrice: 66.74
-    )
-    return view
-}
-
-#Preview("2. Loja Ativa (Sobrecarga 2)") {
-    let view = GameDealsContainer()
-    view.configure(
-        shopImage: UIImage(systemName: "storefront.fill"),
-        shopName: "Nuuvem",
-        status: true
-    )
-    return view
-}
-
-#Preview("3. Loja Desativada (Sobrecarga 2)") {
-    let view = GameDealsContainer()
-    view.configure(
-        shopImage: UIImage(systemName: "storefront"),
-        shopName: "Epic Games",
-        status: false
-    )
-    return view
-}
-
-#Preview("4. Todos Juntos") {
-    let gameDeal = GameDealsContainer()
-    gameDeal.configure(
-        gameImage: UIImage(systemName: "gamecontroller.fill"),
-        gameName: "Cyberpunk 2077",
-        offPercentage: 50,
-        shopName: "GOG",
-        currentGamePrice: 99.90
-    )
-    
-    let activeShop = GameDealsContainer()
-    activeShop.configure(
-        shopImage: UIImage(systemName: "bag.fill"),
-        shopName: "Steam",
-        status: true
-    )
-    
-    let inactiveShop = GameDealsContainer()
-    inactiveShop.configure(
-        shopImage: UIImage(systemName: "bag"),
-        shopName: "Origin",
-        status: false
-    )
-    
-    let stack = UIStackView(arrangedSubviews: [gameDeal, activeShop, inactiveShop])
-    stack.axis = .vertical
-    stack.spacing = 20
-    stack.alignment = .fill
-    stack.isLayoutMarginsRelativeArrangement = true
-    stack.layoutMargins = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
-    
-    return stack
 }

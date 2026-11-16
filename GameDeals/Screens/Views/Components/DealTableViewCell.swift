@@ -2,7 +2,7 @@ import UIKit
 
 class DealTableViewCell: UITableViewCell {
     static let reuseIdentifier = "DealTableViewCell"
-    
+
     private let customContainer = GameDealsContainer()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -17,7 +17,7 @@ class DealTableViewCell: UITableViewCell {
     
     private func setupView() {
         contentView.addSubview(customContainer)
-        customContainer.fillSafeArea()
+        customContainer.fillSuperView()
     }
     
     private func styleListConfig() {
@@ -27,19 +27,17 @@ class DealTableViewCell: UITableViewCell {
     }
     
     func configure(
-        gameImage: UIImage?,
-        gameName: String?,
-        offPercentage: Int?,
-        shopName: String?,
-        currentGamePrice: Double?
+        deal: GameDeal
     ) {
+        let placeholderImage = UIImage(systemName: "gamecontroller.fill")
+        
         customContainer
             .configure(
-                gameImage: gameImage,
-                gameName: gameName,
-                offPercentage: offPercentage,
-                shopName: shopName,
-                currentGamePrice: currentGamePrice
+                gameImage: placeholderImage,
+                title: deal.title,
+                offPercentage: deal.discountPercentage,
+                shopName: deal.storeID,
+                currentGamePrice: Double(deal.salePrice) ?? 0.0
             )
     }
     
@@ -48,7 +46,13 @@ class DealTableViewCell: UITableViewCell {
         shopName: String,
         status: Bool
     ) {
+        let placeholderImage = UIImage(systemName: "bag.fill")
+        
         customContainer
-            .configure(shopImage: shopImage, shopName: shopName, status: status)
+            .configure(shopImage: placeholderImage, shopName: shopName, status: status)
+    }
+    
+    func setImage(_ image: UIImage?) {
+        customContainer.updateImage(image)
     }
 }

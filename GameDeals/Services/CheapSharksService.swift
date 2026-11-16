@@ -24,7 +24,7 @@ final class CheapSharksService {
         }
         
         if let upperPrice = upperPrice {
-            queryItems.append(URLQueryItem(name: "upperPrice", value: upperPrice))
+            queryItems.append(URLQueryItem(name: "upperPrice", value: String(upperPrice)))
         }
         
         if let sortBy = sortBy {
@@ -37,7 +37,10 @@ final class CheapSharksService {
             throw NetworkError.invalidURL
         }
         
-        let (data, response) = try await URLSession.shared.data(from: url)
+        var request = URLRequest(url: url)
+        request.setValue("GameDealsApp/1.0 (IOS)", forHTTPHeaderField: "User-Agent")
+        
+        let (data, response) = try await URLSession.shared.data(for: request)
         
         guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
             throw NetworkError.serverError("Falha na resposta do servidor" as! Error)

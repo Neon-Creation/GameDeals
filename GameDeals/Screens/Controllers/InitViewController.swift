@@ -12,6 +12,8 @@ class InitViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationStyles()
+        configTable()
+        fetchDealsFromApi()
     }
     
     private func navigationStyles() {
@@ -19,14 +21,45 @@ class InitViewController: UIViewController {
         self.navigationController?.navigationBar.prefersLargeTitles = true
     }
     
-    private func loadSampleData() {
-        // Dados de teste mockados
-//        deals = [
-//            GameDeal(dealID: "1", title: "Cyberpunk 2077", salePrice: "99.90", normalPrice: "199.90", savings: "50", thumb: ""),
-//            GameDeal(dealID: "2", title: "Hades II", salePrice: "66.74", normalPrice: "88.99", savings: "25", thumb: ""),
-//            GameDeal(dealID: "3", title: "Hollow Knight", salePrice: "23.49", normalPrice: "46.99", savings: "50", thumb: "")
-//        ]
-        initView.tableView.reloadData()
+    private func configTable() {
+        self.initView.tableView.dataSource = self
+        self.initView.tableView.register(
+            DealTableViewCell.self,
+            forCellReuseIdentifier: DealTableViewCell.reuseIdentifier
+        )
+    }
+    
+    func fetchDealsFromApi() {
+        Task {
+            do {
+                let APIdeals: [GameDeal] = try await CheapSharksService.shared.fetchDeals()
+                deals = APIdeals
+                self.initView.tableView.reloadData()
+            } catch {
+                print("\(error.localizedDescription)")
+            }
+        }
+    }
+}
+
+extension InitViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return deals.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(
+            withIdentifier: DealTableViewCell.reuseIdentifier,
+            for: indexPath
+        ) as? DealTableViewCell else {
+            return UITableViewCell()
+        }
+        
+        let deal = deals[indexPath.row]
+        
+        cell.configure(deal: deal)
+        
+        return cell
     }
 }
 

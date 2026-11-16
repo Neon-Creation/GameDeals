@@ -6,10 +6,10 @@ struct GameDeal: Decodable, Identifiable {
     let storeID: String
     let salePrice: String
     let normalPrice: String
-    let savigs: String
+    let savings: String
     let thumb: String
     
     var discountPercentage: Int {
-        Int(Double(savigs) ?? 0)
+        Int(Double(savings) ?? 0)
     }
 }
