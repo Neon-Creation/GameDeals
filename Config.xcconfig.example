@@ -1,0 +1,4 @@
+// APAGUE O .example e configure a sua chave de API do IsThereAnyDeal
+
+ITAD_API_KEY = // SUA CHAVE AQUI
+ITAD_CLIENT_ID = // SEU CLIENT ID

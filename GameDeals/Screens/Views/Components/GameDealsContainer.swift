@@ -56,7 +56,6 @@ class GameDealsContainer: UIView {
         shopName: String?,
         currentGamePrice: Double?
     ) {
-        imageCard.image = gameImage
         gameNameLabel.text = title
         
         if let percentage = offPercentage, let shopName = shopName {
@@ -66,8 +65,17 @@ class GameDealsContainer: UIView {
             offPercentageAndShopLabel.isHidden = true
         }
         
+        if let gameImage = gameImage {
+            imageCard.image = gameImage
+            imageCard.contentMode = .scaleAspectFill
+        }
+        
         if let currentGamePrice = currentGamePrice {
-            priceLabel.text = currentGamePrice.formattedCurrency()
+            if currentGamePrice != 0 {
+                priceLabel.text = currentGamePrice.formattedCurrency()
+            } else {
+                priceLabel.text = "Gratis"
+            }
         }
     }
     

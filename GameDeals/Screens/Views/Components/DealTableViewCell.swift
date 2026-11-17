@@ -18,6 +18,7 @@ class DealTableViewCell: UITableViewCell {
     private func setupView() {
         contentView.addSubview(customContainer)
         customContainer.fillSuperView()
+        customContainer.padding(Spacing.standard)
     }
     
     private func styleListConfig() {

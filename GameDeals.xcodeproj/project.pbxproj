@@ -6,7 +6,14 @@
 	objectVersion = 110;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		967964E530AB4AD0001E2C55 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 967964E430AB4AC8001E2C55 /* Config.xcconfig */; };
+		967964E730AB4AED001E2C55 /* Config.xcconfig.example in Resources */ = {isa = PBXBuildFile; fileRef = 967964E630AB4AED001E2C55 /* Config.xcconfig.example */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
+		967964E430AB4AC8001E2C55 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
+		967964E630AB4AED001E2C55 /* Config.xcconfig.example */ = {isa = PBXFileReference; lastKnownFileType = text; path = Config.xcconfig.example; sourceTree = "<group>"; };
 		96F1963330A343390092C09E /* GameDeals.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GameDeals.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -43,6 +50,8 @@
 		96F1962A30A343390092C09E = {
 			isa = PBXGroup;
 			children = (
+				967964E430AB4AC8001E2C55 /* Config.xcconfig */,
+				967964E630AB4AED001E2C55 /* Config.xcconfig.example */,
 				96F1963530A343390092C09E /* GameDeals */,
 				96F1963430A343390092C09E /* Products */,
 			);
@@ -115,6 +124,8 @@
 		96F1963130A343390092C09E /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			files = (
+				967964E530AB4AD0001E2C55 /* Config.xcconfig in Resources */,
+				967964E730AB4AED001E2C55 /* Config.xcconfig.example in Resources */,
 			);
 		};
 /* End PBXResourcesBuildPhase section */
@@ -130,6 +141,7 @@
 /* Begin XCBuildConfiguration section */
 		96F1964730A3433A0092C09E /* Debug configuration for PBXNativeTarget "GameDeals" */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 967964E430AB4AC8001E2C55 /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -162,6 +174,7 @@
 		};
 		96F1964830A3433A0092C09E /* Release configuration for PBXNativeTarget "GameDeals" */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 967964E430AB4AC8001E2C55 /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -194,6 +207,7 @@
 		};
 		96F1964930A3433A0092C09E /* Debug configuration for PBXProject "GameDeals" */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 967964E430AB4AC8001E2C55 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -258,6 +272,7 @@
 		};
 		96F1964A30A3433A0092C09E /* Release configuration for PBXProject "GameDeals" */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 967964E430AB4AC8001E2C55 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;

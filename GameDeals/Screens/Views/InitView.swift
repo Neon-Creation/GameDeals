@@ -13,13 +13,20 @@ class InitView: UIView {
     }
     
     private func setupView() {
+        addSubview(activityIndicator)
         addSubview(mainStackView)
     }
     
     private func setupConstraints() {
         mainStackView.fillSafeArea()
+        
         NSLayoutConstraint.activate([
             mainStackView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor)
+        ])
+        
+        NSLayoutConstraint.activate([
+            activityIndicator.centerXAnchor.constraint(equalTo: centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: centerYAnchor),
         ])
     }
     
@@ -44,7 +51,7 @@ class InitView: UIView {
         return label
     }()
     
-    private let segmentedControl: UISegmentedControl = {
+    let segmentedControl: UISegmentedControl = {
         let items = ["Desconto", "Preço", "Nota"]
         let control = UISegmentedControl(items: items)
         
@@ -56,6 +63,13 @@ class InitView: UIView {
         
         control.translatesAutoresizingMaskIntoConstraints = false
         return control
+    }()
+    
+    let activityIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView()
+        indicator.hidesWhenStopped = true
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        return indicator
     }()
     
     let tableView: UITableView = {
