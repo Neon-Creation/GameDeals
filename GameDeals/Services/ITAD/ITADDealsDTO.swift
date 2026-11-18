@@ -9,22 +9,23 @@ struct ITADGameItemDTO: Decodable, Sendable {
     let title: String
     let assets: ITADAssetsDTO?
     let deal: ITADDealDetailsDTO?
-                                                                                                            
-    func toDomain() -> GameDeal {
+    
+    func toDomain(stores: [StoreDeal]) -> GameDeal {
         let sale = deal?.price?.amount ?? 0.0
         let regular = deal?.regular?.amount ?? 0.0
         let discount = deal?.cut ?? 0
-        let store = deal?.shop?.name ?? "Steam"
+        let store = deal?.shop?.name ?? ""
         let image = assets?.preferredImageURL ?? ""
-                                                                                                                                                                                       
+
         return GameDeal(
             dealID: id,
             title: title,
-            storeID: store,
+            thumb: image,
+            bestStoreName: store,
             salePrice: String(format: "%.2f", sale),
             normalPrice: String(format: "%.2f", regular),
-            savings: "\(discount)",
-            thumb: image
+            savings: discount,
+            stores: stores
         )
     }
 }
@@ -53,4 +54,20 @@ struct ITADShopDTO: Decodable, Sendable {
                                                                                                                                                                                        
 struct ITADPriceDTO: Decodable, Sendable {
     let amount: Double
+}
+
+struct ITADPricesResponseItemDTO: Decodable, Sendable {
+    let id: String
+    let deals: [ITADDealDetailsDTO]
+    
+    func toStoreDeals() -> [StoreDeal] {
+        deals.map { deal in
+            StoreDeal(
+                storeName: deal.shop?.name ?? "",
+                salePrice: String(format: "%.2f", deal.price?.amount ?? 0.0),
+                normalPrice: String(format: "%.2f", deal.regular?.amount ?? 0.0),
+                savings: deal.cut ?? 0
+            )
+        }
+    }
 }

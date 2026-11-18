@@ -36,10 +36,30 @@ final class ITADServiceAPI: DealsServiceProtocol {
         
         do {
             let decoder = JSONDecoder()
-            let dtoResponse = try decoder.decode(ITADDealsResponseDTO.self, from: data)
-            return dtoResponse.list.map {$0.toDomain()}
+            let dealsResponse = try decoder.decode(ITADDealsResponseDTO.self, from: data)
+            
+            let ids = dealsResponse.list.map { $0.id }
+            let pricesReponse = try await fetchPrices(for: ids)
+            
+            let storeDict = Dictionary(uniqueKeysWithValues: pricesReponse.map { ($0.id, $0.toStoreDeals()) })
+            
+            return dealsResponse.list.map { item in
+                item.toDomain(stores: storeDict[item.id] ?? [])
+            }
         } catch {
             throw NetworkError.decodingError(error.localizedDescription)
         }
+    }
+    
+    private func fetchPrices(for ids: [String]) async throws -> [ITADPricesResponseItemDTO] {
+        let endpoint = ITADEndpoint.prices(ids: ids)
+        let request = try endpoint.asURLRequest()
+        let (data, response) = try await session.data(for: request)
+        
+        guard let http = response as? HTTPURLResponse, (200...299).contains(http.statusCode) else {
+            throw NetworkError.invalidResponse(statusCode: -1)
+        }
+        
+        return try JSONDecoder().decode([ITADPricesResponseItemDTO].self, from: data)
     }
 }

@@ -36,8 +36,8 @@ class DealTableViewCell: UITableViewCell {
             .configure(
                 gameImage: placeholderImage,
                 title: deal.title,
-                offPercentage: deal.discountPercentage,
-                shopName: deal.storeID,
+                offPercentage: deal.savings,
+                shopName: deal.bestStoreName,
                 currentGamePrice: Double(deal.salePrice) ?? 0.0
             )
     }

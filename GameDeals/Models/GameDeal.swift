@@ -1,15 +1,15 @@
-struct GameDeal: Decodable, Identifiable {
+struct GameDeal: Identifiable {
     var id: String { dealID }
     
     let dealID: String
     let title: String
-    let storeID: String
+    let thumb: String
+
+    let bestStoreName: String
     let salePrice: String
     let normalPrice: String
-    let savings: String
-    let thumb: String
+    let savings: Int
     
-    var discountPercentage: Int {
-        Int(Double(savings) ?? 0)
-    }
+    let stores: [StoreDeal]
+    
 }

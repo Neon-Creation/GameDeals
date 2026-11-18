@@ -3,6 +3,8 @@ import UIKit
 class InitViewController: UIViewController {
     private let initView = InitView()
     private var deals: [GameDeal] = []
+    
+    var onDealSelected: ((GameDeal, UIImage) -> Void)?
 
     // API SERVICE
     private let service: DealsServiceProtocol
@@ -41,6 +43,8 @@ class InitViewController: UIViewController {
     
     private func configTable() {
         self.initView.tableView.dataSource = self
+        self.initView.tableView.delegate = self
+        
         self.initView.tableView.register(
             DealTableViewCell.self,
             forCellReuseIdentifier: DealTableViewCell.reuseIdentifier
@@ -148,6 +152,16 @@ extension InitViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        
+        let deal = deals[indexPath.row]
+
+        Task {
+            let img = await ImageLoader.shared.loadImage(from: deal.thumb)
+        
+            if let img = img {
+                onDealSelected?(deal, img)
+            }
+        }
     }
 }
 

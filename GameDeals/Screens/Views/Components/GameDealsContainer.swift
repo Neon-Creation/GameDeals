@@ -123,7 +123,7 @@ class GameDealsContainer: UIView {
             image.widthAnchor.constraint(equalToConstant: 60),
             image.heightAnchor.constraint(equalToConstant: 60),
         ])
-
+        
         return image
     }()
 

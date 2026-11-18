@@ -2,6 +2,7 @@ import Foundation
 
 enum ITADEndpoint {
     case deals(sortBy: SortOption, limit: Int = 30)
+    case prices(ids: [String])
     
     private var scheme: String { "https" }
     private var host: String { "api.isthereanydeal.com" }
@@ -10,6 +11,8 @@ enum ITADEndpoint {
         switch self {
         case .deals:
             return "/deals/v2"
+        case .prices:
+            return "/games/prices/v2"
         }
     }
     
@@ -20,6 +23,10 @@ enum ITADEndpoint {
                 URLQueryItem(name: "country", value: Locale.current.region?.identifier ?? "BR"),
                 URLQueryItem(name: "sort", value: sortBy.itadSortParam),
                 URLQueryItem(name: "limit", value: String(limit)),
+            ]
+        case .prices:
+            return [
+                URLQueryItem(name: "country", value: Locale.current.region?.identifier ?? "BR")
             ]
         }
     }
@@ -42,10 +49,18 @@ enum ITADEndpoint {
         }
         
         var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        request.setValue("application/json", forHTTPHeaderField: "Accept")
         request.setValue(apiKey, forHTTPHeaderField: "ITAD-API-KEY")
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
         request.timeoutInterval = 15
+        
+        switch self {
+        case .deals:
+            request.httpMethod = "GET"
+        case .prices(let ids):
+            request.httpMethod = "POST"
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.httpBody = try JSONEncoder().encode(ids)
+        }
         
         return request
     }

@@ -1,6 +1,6 @@
 import UIKit
 
-class ShoppingListViewController: UIViewController {
+class StoreViewController: UIViewController {
     override func loadView() {
         view = ShoppingListView()
     }
