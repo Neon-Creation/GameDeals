@@ -15,7 +15,7 @@ enum ITADEndpoint {
             return "/games/prices/v2"
         }
     }
-    
+        
     private var queryItems: [URLQueryItem] {
         switch self {
         case .deals(let sortBy, let limit):
@@ -30,7 +30,7 @@ enum ITADEndpoint {
             ]
         }
     }
-    
+        
     func asURLRequest() throws -> URLRequest {
         var components = URLComponents()
         components.scheme = scheme
